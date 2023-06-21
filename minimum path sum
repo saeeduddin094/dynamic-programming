@@ -1,0 +1,77 @@
+#include <bits/stdc++.h> 
+#include<climits>
+int solve(int x,int y,int n,int m,vector< vector<int> > &grid,vector< vector<int> > &dp)
+{
+    if( x==n-1 && y==m-1)
+    {
+        return grid[x][y];
+    }
+    if(dp[x][y]!=-1)
+    {
+        return dp[x][y];
+    }
+    int right=INT_MAX;
+    if(x<n-1)
+    {
+        right=grid[x][y] + solve(x+1,y,n,m,grid,dp);
+    }
+    int down=INT_MAX;
+    if(y<m-1)
+    {
+        down = grid[x][y] + solve(x,y+1,n,m,grid,dp);
+    }
+    return dp[x][y]=min(right,down);
+}
+int solvetab(int x,int y,int n,int m,vector< vector<int> > &grid)
+{
+    
+    vector< vector<int> > dp(n+1,vector<int> (m+1,-1));
+    for(int x=n-1;x>=0;x--)
+    {
+        for(int y=m-1;y>=0;y--)
+        {
+            if( x==n-1 && y==m-1)
+            {
+               dp[x][y]= grid[x][y];
+            }
+            else
+            {
+                int right=INT_MAX;
+                if(x<n-1)
+                {
+                    right=grid[x][y] + dp[x+1][y];
+                }            
+                int down=INT_MAX;
+                if (y < m - 1) 
+                {
+                down=grid[x][y] + dp[x][y+1];
+                }
+                dp[x][y]=min(right,down);
+                }
+            }
+    }
+    return dp[0][0];
+}
+int minSumPath(vector<vector<int>> &grid) {
+    int n=grid.size();
+    int m=grid[0].size();
+    vector< vector<int> > dp(n,vector<int>(m,-1));
+    // return solvetab(0,0,n,m,grid,dp);
+    return solvetab(0,0,n,m,grid);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
